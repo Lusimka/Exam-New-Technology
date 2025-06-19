@@ -84,4 +84,4 @@
 ## Автор
 
 [Vadori]
-[Посилання на ваш GitHub профіль або інший ресурс]
+[https://github.com/Lusimka]
