@@ -223,7 +223,7 @@
               // Анімація зменшення до точки для 3D-моделі
               removedItem.modelEntity.setAttribute('animation__shrinkRemove', {
                   property: 'scale',
-                  to: '0.001 0.001 0.001',
+                  to: '0.0001 0.0001 0.0001',
                   dur: 200, // Змінено на 500
                   easing: 'easeInQuad'
               });
