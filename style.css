@@ -1,0 +1,615 @@
+body {
+    margin: 0;
+    background: #111;
+    overflow: hidden; /* Приховування скролбарів */
+}
+
+#a-scene {
+    width: 100vw;
+    height: 100vh;
+}
+
+/* Стилі для СТАРОЇ панелі управління Hash Table - приховуємо її */
+#hash-controls-overlay {
+    display: none; /* Цю панель ми тепер приховуємо */
+}
+
+/* Стилі для НОВОЇ панелі введення Array */
+#array-input-overlay {
+    position: absolute;
+    /* Позиціонуємо ближче до місця, де знаходиться 3D-масив */
+    top: 50%;
+    left: 20%; /* Переміщено ліворуч, щоб уникнути конфлікту з хеш-таблицею */
+    transform: translate(-50%, -50%); /* Центруємо відносно top/left */
+    background-color: rgba(0, 0, 0, 0.85); /* Темніший фон для кращої читабельності */
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
+    font-family: sans-serif;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 220px; /* Трохи ширше */
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5); /* Неонове світіння */
+    border: 1px solid rgba(0, 255, 255, 0.3); /* Межа */
+    display: none; /* За замовчуванням прихована */
+}
+
+#array-input-overlay h3 {
+    margin: 0 0 10px 0;
+    color: #00BCD4; /* Приємний колір для заголовка */
+    text-align: center;
+    font-size: 1.3em;
+    text-shadow: 0 0 5px #00BCD4;
+}
+
+#array-input-overlay label {
+    font-size: 0.9em;
+    color: #EEE;
+    margin-bottom: -5px; /* Менший відступ */
+}
+
+#array-input-overlay input[type="text"],
+#array-input-overlay input[type="number"],
+#array-input-overlay button {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #555;
+    font-size: 1em;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#array-input-overlay input {
+    background-color: #222;
+    color: white;
+    caret-color: #00BCD4; /* Колір курсору */
+}
+
+#array-input-overlay button {
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    font-weight: bold;
+}
+
+#array-input-overlay button:hover {
+    transform: translateY(-2px);
+}
+
+#array-input-overlay #arrayInputAddBtn { background-color: #4CAF50; }
+#array-input-overlay #arrayInputAddBtn:hover { background-color: #43A047; }
+
+#array-input-overlay #arrayInputGetBtn { background-color: #2196F3; }
+#array-input-overlay #arrayInputGetBtn:hover { background-color: #1976D2; }
+
+#array-input-overlay #arrayInputRemoveBtn { background-color: #F44336; }
+#array-input-overlay #arrayInputRemoveBtn:hover { background-color: #D32F2F; }
+
+/* Стиль для кнопки закриття/відміни */
+#array-input-overlay #arrayInputCloseBtn {
+    background-color: #616161;
+    margin-top: 10px; /* Відступ від інших кнопок */
+}
+#array-input-overlay #arrayInputCloseBtn:hover {
+    background-color: #424242;
+}
+
+
+/* НОВІ СТИЛІ ДЛЯ hash-input-overlay */
+#hash-input-overlay {
+    position: absolute;
+    top: 50%; /* Центруємо вертикально */
+    right: 5%; /* Позиціонуємо праворуч */
+    transform: translateY(-50%); /* Центруємо відносно top/right */
+    background-color: rgba(0, 0, 0, 0.85);
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
+    font-family: sans-serif;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 220px;
+    box-shadow: 0 0 15px rgba(255, 87, 34, 0.5); /* Неонове світіння помаранчевим */
+    border: 1px solid rgba(255, 87, 34, 0.3);
+    display: none; /* За замовчуванням прихована */
+}
+
+#hash-input-overlay h3 {
+    margin: 0 0 10px 0;
+    color: #FF5722; /* Колір заголовка хеш-таблиці */
+    text-align: center;
+    font-size: 1.3em;
+    text-shadow: 0 0 5px #FF5722;
+}
+
+#hash-input-overlay label {
+    font-size: 0.9em;
+    color: #EEE;
+    margin-bottom: -5px;
+}
+
+#hash-input-overlay input[type="text"],
+#hash-input-overlay input[type="number"],
+#hash-input-overlay button {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #555;
+    font-size: 1em;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#hash-input-overlay input {
+    background-color: #222;
+    color: white;
+    caret-color: #FF5722; /* Колір курсору */
+}
+
+#hash-input-overlay button {
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    font-weight: bold;
+}
+
+#hash-input-overlay button:hover {
+    transform: translateY(-2px);
+}
+
+#hash-input-overlay #hashInputInsertBtn { background-color: #FF9800; } /* Помаранчевий */
+#hash-input-overlay #hashInputInsertBtn:hover { background-color: #FB8C00; }
+
+#hash-input-overlay #hashInputSearchBtn { background-color: #2196F3; } /* Синій */
+#hash-input-overlay #hashInputSearchBtn:hover { background-color: #1976D2; }
+
+#hash-input-overlay #hashInputDeleteBtn { background-color: #F44336; } /* Червоний для видалення */
+#hash-input-overlay #hashInputDeleteBtn:hover { background-color: #D32F2F; }
+
+#hash-input-overlay #hashInputCloseBtn {
+    background-color: #616161;
+    margin-top: 10px;
+}
+#hash-input-overlay #hashInputCloseBtn:hover {
+    background-color: #424242;
+}
+
+/* Стилі для повідомлень в оверлеї */
+.message-box {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 8px;
+    border-radius: 5px;
+    margin-top: 10px;
+    color: white;
+    text-align: center;
+    font-size: 0.9em;
+    display: none; /* За замовчуванням приховано */
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.message-box.show {
+    opacity: 1;
+    display: block;
+}
+
+.message-box.error {
+    background-color: rgba(244, 67, 54, 0.2); /* Червонуватий фон для помилок */
+    border-color: rgba(244, 67, 54, 0.5);
+    color: #FFEBEE;
+}
+
+.message-box.success {
+    background-color: rgba(76, 175, 80, 0.2); /* Зеленуватий фон для успіху */
+    border-color: rgba(76, 175, 80, 0.5);
+    color: #E8F5E9;
+}
+
+/* ----------- Уніфіковані СТИЛІ ДЛЯ ВСІХ ІНФОРМАЦІЙНИХ ПАНЕЛЕЙ (Базовий стиль) ----------- */
+.info-overlay-base {
+    position: absolute;
+    top: 50%;
+    left: 15%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(10, 10, 20, 0.95);
+    padding: 20px;
+    border-radius: 12px;
+    color: #E0E0E0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    width: 280px;
+    max-height: 550px;
+    overflow-y: auto;
+}
+
+/* Загальні стилі для заголовків (h3) всередині всіх інформаційних панелей */
+.info-overlay-base h3 {
+    margin: 0 0 12px 0;
+    text-align: center;
+    font-size: 1.6em;
+    font-weight: bold;
+    padding-bottom: 8px;
+    border-bottom: 1px solid;
+}
+
+/* Загальні стилі для параграфів (p) та списків (ul) всередині всіх інформаційних панелей */
+.info-overlay-base p,
+.info-overlay-base ul {
+    font-size: 0.9em;
+    line-height: 1.5;
+    margin-bottom: 8px;
+    color: #D0D0D0;
+    text-align: justify;
+}
+
+/* Загальні стилі для списків (ul) всередині всіх інформаційних панелей */
+.info-overlay-base ul {
+    list-style-type: disc;
+    padding-left: 20px;
+    margin-top: -3px;
+}
+
+/* Загальні стилі для елементів списку (li) всередині всіх інформаційних панелей */
+.info-overlay-base ul li {
+    margin-bottom: 4px;
+}
+
+/* General button style within info overlays */
+.info-overlay-base button {
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 6px;
+    border: none;
+    font-size: 1em;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 15px; /* Adjust as needed, moved from individual close buttons */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.info-overlay-base button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Specific styles for close buttons */
+/* We'll use IDs for close buttons to apply distinct colors */
+#arrayInfoCloseBtn,
+#hashInfoCloseBtn,
+#queueInfoCloseBtn,
+#stackInfoCloseBtn,
+#binaryTreeInfoCloseBtn {
+    /* Base styles for all close buttons, specific colors will override */
+    margin-top: 15px; /* Ensure consistent spacing */
+    background-color: rgba(200, 50, 50, 0.8); /* A default red for close buttons */
+}
+
+#arrayInfoCloseBtn:hover,
+#hashInfoCloseBtn:hover,
+#queueInfoCloseBtn:hover,
+#stackInfoCloseBtn:hover,
+#binaryTreeInfoCloseBtn:hover {
+    background-color: rgba(255, 0, 0, 0.8); /* Darker red on hover */
+}
+
+
+/* ----------- ІНДИВІДУАЛЬНІ КОЛЬОРИ ТА ТІНІ ДЛЯ КОЖНОЇ ПАНЕЛІ, ВКЛЮЧАЮЧИ СКРОЛБАР ТА КНОПКИ ЗАКРИТТЯ ----------- */
+
+/* Array Info Overlay */
+#array-info-overlay {
+    box-shadow: 0 0 20px rgba(0, 150, 136, 0.7);
+    border: 1px solid rgba(0, 150, 136, 0.5);
+    /* Скролбар для Array */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 150, 136, 0.6) rgba(20, 20, 30, 0.8);
+}
+#array-info-overlay::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+#array-info-overlay::-webkit-scrollbar-track {
+    background: rgba(20, 20, 30, 0.8);
+    border-radius: 10px;
+}
+#array-info-overlay::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 150, 136, 0.6);
+    border-radius: 10px;
+    border: 2px solid rgba(10, 10, 20, 0.95);
+}
+#array-info-overlay::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 150, 136, 0.8);
+}
+#array-info-overlay h3 {
+    color: #4DB6AC;
+    text-shadow: 0 0 8px rgba(77, 182, 172, 0.7);
+    border-bottom-color: rgba(77, 182, 172, 0.3);
+}
+#array-info-overlay strong {
+    color: #80CBC4;
+}
+/* Array close button specific style */
+#arrayInfoCloseBtn {
+    background-color: rgba(0, 150, 136, 0.7); /* Match array's main color, slightly darker */
+}
+#arrayInfoCloseBtn:hover {
+    background-color: rgba(0, 150, 136, 0.9);
+}
+
+
+/* Hash Table Info Overlay */
+#hash-info-overlay {
+    box-shadow: 0 0 20px rgba(76, 175, 80, 0.7);
+    border: 1px solid rgba(76, 175, 80, 0.5);
+    /* Скролбар для Hash */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(76, 175, 80, 0.6) rgba(20, 20, 30, 0.8);
+}
+#hash-info-overlay::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+#hash-info-overlay::-webkit-scrollbar-track {
+    background: rgba(20, 20, 30, 0.8);
+    border-radius: 10px;
+}
+#hash-info-overlay::-webkit-scrollbar-thumb {
+    background-color: rgba(76, 175, 80, 0.6);
+    border-radius: 10px;
+    border: 2px solid rgba(10, 10, 20, 0.95);
+}
+#hash-info-overlay::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(76, 175, 80, 0.8);
+}
+#hash-info-overlay h3 {
+    color: #81C784;
+    text-shadow: 0 0 8px rgba(129, 199, 132, 0.7);
+    border-bottom-color: rgba(129, 199, 132, 0.3);
+}
+#hash-info-overlay strong {
+    color: #A5D6A7;
+}
+/* Hash close button specific style */
+#hashInfoCloseBtn {
+    background-color: rgba(76, 175, 80, 0.7); /* Match hash's main color */
+}
+#hashInfoCloseBtn:hover {
+    background-color: rgba(76, 175, 80, 0.9);
+}
+
+
+/* Queue (FIFO) Info Overlay */
+#queue-info-overlay {
+    box-shadow: 0 0 20px rgba(33, 150, 243, 0.7);
+    border: 1px solid rgba(33, 150, 243, 0.5);
+    /* Скролбар для Queue */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(33, 150, 243, 0.6) rgba(20, 20, 30, 0.8);
+}
+#queue-info-overlay::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+#queue-info-overlay::-webkit-scrollbar-track {
+    background: rgba(20, 20, 30, 0.8);
+    border-radius: 10px;
+}
+#queue-info-overlay::-webkit-scrollbar-thumb {
+    background-color: rgba(33, 150, 243, 0.6);
+    border-radius: 10px;
+    border: 2px solid rgba(10, 10, 20, 0.95);
+}
+#queue-info-overlay::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(33, 150, 243, 0.8);
+}
+#queue-info-overlay h3 {
+    color: #64B5F6;
+    text-shadow: 0 0 8px rgba(100, 181, 246, 0.7);
+    border-bottom-color: rgba(100, 181, 246, 0.3);
+}
+#queue-info-overlay strong {
+    color: #BBDEFB;
+}
+/* Queue close button specific style */
+#queueInfoCloseBtn {
+    background-color: rgba(33, 150, 243, 0.7); /* Match queue's main color */
+}
+#queueInfoCloseBtn:hover {
+    background-color: rgba(33, 150, 243, 0.9);
+}
+
+
+/* Stack Info Overlay */
+#stack-info-overlay {
+    box-shadow: 0 0 20px rgba(70, 130, 180, 0.7);
+    border: 1px solid rgba(70, 130, 180, 0.5);
+    /* Скролбар для Stack */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(70, 130, 180, 0.6) rgba(20, 20, 30, 0.8);
+}
+#stack-info-overlay::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+#stack-info-overlay::-webkit-scrollbar-track {
+    background: rgba(20, 20, 30, 0.8);
+    border-radius: 10px;
+}
+#stack-info-overlay::-webkit-scrollbar-thumb {
+    background-color: rgba(70, 130, 180, 0.6);
+    border-radius: 10px;
+    border: 2px solid rgba(10, 10, 20, 0.95);
+}
+#stack-info-overlay::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(70, 130, 180, 0.8);
+}
+#stack-info-overlay h3 {
+    color: #87CEEB;
+    text-shadow: 0 0 8px rgba(135, 206, 235, 0.7);
+    border-bottom-color: rgba(135, 206, 235, 0.3);
+}
+#stack-info-overlay strong {
+    color: #ADD8E6;
+}
+/* Stack close button specific style */
+#stackInfoCloseBtn {
+    background-color: rgba(70, 130, 180, 0.7); /* Match stack's main color */
+}
+#stackInfoCloseBtn:hover {
+    background-color: rgba(70, 130, 180, 0.9);
+}
+
+
+/* Binary Tree Info Overlay */
+#binary-tree-info-overlay {
+    box-shadow: 0 0 20px rgba(156, 39, 176, 0.7);
+    border: 1px solid rgba(156, 39, 176, 0.5);
+    /* Скролбар для Binary Tree */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(156, 39, 176, 0.6) rgba(20, 20, 30, 0.8);
+}
+#binary-tree-info-overlay::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+#binary-tree-info-overlay::-webkit-scrollbar-track {
+    background: rgba(20, 20, 30, 0.8);
+    border-radius: 10px;
+}
+#binary-tree-info-overlay::-webkit-scrollbar-thumb {
+    background-color: rgba(156, 39, 176, 0.6);
+    border-radius: 10px;
+    border: 2px solid rgba(10, 10, 20, 0.95);
+}
+#binary-tree-info-overlay::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(156, 39, 176, 0.8);
+}
+#binary-tree-info-overlay h3 {
+    color: #AB47BC;
+    text-shadow: 0 0 8px rgba(171, 71, 188, 0.7);
+    border-bottom-color: rgba(171, 71, 188, 0.3);
+}
+#binary-tree-info-overlay strong {
+    color: #CE93D8;
+}
+/* Binary Tree close button specific style */
+#binaryTreeInfoCloseBtn {
+    background-color: rgba(156, 39, 176, 0.7); /* Match tree's main color */
+}
+#binaryTreeInfoCloseBtn:hover {
+    background-color: rgba(156, 39, 176, 0.9);
+}
+
+/* Контейнер для кнопки та панелі */
+#audioContainer {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 99;
+    display: flex;
+    flex-direction: column; /* Елементи будуть розташовані один під одним */
+    align-items: flex-end; /* Вирівнюємо елементи по правому краю контейнера */
+}
+
+/* Стилі для іконки-кнопки */
+#toggleMusicBtn {
+    background-color: transparent; /* Прозорий фон */
+    border: none; /* Без рамки */
+    color: white; /* Білий колір символу */
+    font-size: 28px; /* Більший розмір шрифту для іконки */
+    cursor: pointer;
+    padding: 5px; /* Невеликий відступ */
+    line-height: 1; /* Вирівнювання тексту */
+    transition: color 0.3s ease; /* Анімація при наведенні */
+    -webkit-tap-highlight-color: transparent; /* Вимкнути синій фон при натисканні на мобільних */
+    outline: none; /* Вимкнути обведення при фокусі */
+}
+
+#toggleMusicBtn:hover {
+    color: #4CAF50; /* Зелений колір при наведенні */
+}
+
+/* Стилі для панелі керування */
+#volumeControlPanel {
+    background-color: rgba(0,0,0,0.7); /* Напівпрозорий чорний фон */
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 5px; /* Відступ від кнопки */
+    min-width: 150px;
+    display: none; /* За замовчуванням прихована */
+    flex-direction: column; /* Елементи всередині панелі також стовпчиком */
+    gap: 10px; /* Відступ між елементами всередині панелі */
+
+    /* Плавний перехід для появи/зникнення */
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Коли панель відображається */
+#volumeControlPanel[style*="display: flex"] {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+/* Стилі для повзунка гучності */
+#volumeSlider {
+    width: 100%;
+    -webkit-appearance: none; /* Приховати стандартний вигляд WebKit */
+    appearance: none;
+    height: 8px;
+    background: #555; /* Темніший фон повзунка */
+    outline: none;
+    opacity: 0.8;
+    transition: opacity .2s;
+    border-radius: 4px;
+}
+
+#volumeSlider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #4CAF50; /* Зелений колір ручки */
+    cursor: pointer;
+}
+
+#volumeSlider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #4CAF50;
+    cursor: pointer;
+}
+
+/* Стилі для випадаючого списку */
+#musicStyleSelect {
+    width: 100%;
+    padding: 5px;
+    border-radius: 3px;
+    border: 1px solid #555;
+    background-color: rgba(255,255,255,0.1); /* Напівпрозорий білий */
+    color: white; /* Білий текст */
+    appearance: none; /* Приховати стандартну стрілку */
+    -webkit-appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23ffffff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>'); /* Кастомна стрілка SVG */
+    background-repeat: no-repeat;
+    background-position: right 8px top 50%;
+    background-size: 16px auto;
+}
+
+#musicStyleSelect option {
+    background-color: #333; /* Темний фон для опцій */
+    color: white;
+}
+
