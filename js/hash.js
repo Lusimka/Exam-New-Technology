@@ -306,6 +306,7 @@ if (htmlHashDeleteBtn) {
 // Обробник для кнопки перемикання видимості панелі
 if (toggleHashInputPanelBtn) {
     toggleHashInputPanelBtn.addEventListener('click', () => {
+        window.playSoundEffect('clickSoundEffect', 0.05); // Додаємо звук при enqueue
         if (hashInputOverlay) {
             hashInputOverlay.style.display = hashInputOverlay.style.display === 'none' ? 'flex' : 'none';
             if (hashInputOverlay.style.display === 'flex') {
