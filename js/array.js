@@ -224,7 +224,7 @@
               removedItem.modelEntity.setAttribute('animation__shrinkRemove', {
                   property: 'scale',
                   to: '0.001 0.001 0.001',
-                  dur: 500, // Змінено на 500
+                  dur: 200, // Змінено на 500
                   easing: 'easeInQuad'
               });
               // Анімація прозорості та зменшення для контейнера (щоб зникли також text елементи)
@@ -232,13 +232,13 @@
                    removedItem.valueLabel.setAttribute('animation__fadeValueLabelRemove', {
                        property: 'opacity',
                        to: 0,
-                       dur: 500, // Змінено на 500
+                       dur: 200, // Змінено на 500
                        easing: 'easeInQuad'
                      });
                    removedItem.valueLabel.setAttribute('animation__shrinkValueLabelRemove', {
                        property: 'scale',
                        to: '0 0 0',
-                       dur: 500, // Змінено на 500
+                       dur: 200, // Змінено на 500
                        easing: 'easeInQuad'
                      });
               }
