@@ -79,18 +79,6 @@ function updateBucketVisualization(bucketIndex) {
         item.setAttribute('data-key', key);
         item.setAttribute('data-bucket-index', bucketIndex); // Додаємо індекс відра для легшого пошуку
 
-        // Анімація підсвічування (як у масиві)
-        item.setAttribute('animation__highlight', {
-            property: 'color',
-            type: 'color',
-            from: itemData.color, // Повертаємо до оригінального кольору
-            to: '#FFFF00', // Жовтий для підсвічування
-            dur: 300,
-            dir: 'alternate',
-            loop: 2, // Двічі блимає
-            startEvents: `highlight-key-${key}` // Унікальна подія для кожного ключа
-        });
-
         const label = document.createElement('a-text');
         label.setAttribute('value', key);
         label.setAttribute('align', 'center');
@@ -152,6 +140,17 @@ if (htmlHashInsertBtn) {
             const existingItemData = buckets[index].get(key);
             existingItemData.value = value;
             if (existingItemData.entity) {
+                // Збережено анімацію для оновлення, якщо потрібно підсвічування
+                existingItemData.entity.setAttribute('animation__highlight', {
+                    property: 'color',
+                    type: 'color',
+                    from: existingItemData.color,
+                    to: '#FFFF00',
+                    dur: 300,
+                    dir: 'alternate',
+                    loop: 2,
+                    startEvents: `highlight-key-${key}`
+                });
                 existingItemData.entity.emit(`highlight-key-${key}`);
                 existingItemData.entity.querySelector('a-text').setAttribute('value', key); // Оновити текст
             }
@@ -201,8 +200,47 @@ if (htmlHashSearchBtn) {
 
         if (bucketMap.has(key)) {
             const itemData = bucketMap.get(key);
-            if (itemData.entity) {
-                itemData.entity.emit(`highlight-key-${key}`); // Запускаємо анімацію 'highlight'
+            const targetEntity = itemData.entity;
+
+            if (targetEntity) {
+                // Отримуємо поточні розміри (width, height, depth) елемента
+                const originalWidth = targetEntity.getAttribute('width');
+                const originalHeight = targetEntity.getAttribute('height');
+                const originalDepth = targetEntity.getAttribute('depth');
+
+                // Розраховуємо збільшений розмір (наприклад, у 1.5 рази)
+                const highlightWidth = originalWidth * 2;
+                const highlightHeight = originalHeight * 2;
+                const highlightDepth = originalDepth * 2;
+
+                const highlightScaleString = `${highlightWidth} ${highlightHeight} ${highlightDepth}`;
+                const originalScaleString = `${originalWidth} ${originalHeight} ${originalDepth}`;
+
+
+                // Видаляємо всі попередні анімації масштабу
+                targetEntity.removeAttribute('animation__highlightScale');
+                targetEntity.removeAttribute('animation__returnScale');
+
+                // Анімація збільшення
+                targetEntity.setAttribute('animation__highlightScale', {
+                    property: 'scale',
+                    to: highlightScaleString,
+                    dur: 300,
+                    easing: 'easeOutQuad',
+                    autoplay: true
+                });
+
+                // Запускаємо анімацію повернення до початкового розміру після затримки
+                setTimeout(() => {
+                    targetEntity.setAttribute('animation__returnScale', {
+                        property: 'scale',
+                        to: originalScaleString,
+                        dur: 300,
+                        easing: 'easeOutQuad',
+                        autoplay: true
+                    });
+                }, 350); // Затримка має бути трохи більшою, ніж тривалість анімації збільшення
+
                 console.log(`Found item with key: '${key}', value: '${itemData.value}' in bucket ${index}`);
                 showHashMessage(`Key '${key}' found in bucket ${index}. Value: '${itemData.value}'`, "success");
                 found = true;
